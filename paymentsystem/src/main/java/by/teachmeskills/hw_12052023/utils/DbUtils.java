@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbUtils { //подключение к базе
-    private static final String dbUrl = "jdbc:mysql://localhost:3306/PAYMENT_SYSTEM_DB";
+    private static final String dbUrl = "jdbc:mysql://localhost:3306/payment_system_db";
     private static final String dbUsername = "root";
     private static final String dbPassword = "1234";
 

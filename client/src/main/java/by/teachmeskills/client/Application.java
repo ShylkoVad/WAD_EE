@@ -1,15 +1,20 @@
 package by.teachmeskills.client;
 
+import by.teachmeskills.hw_12052023.model.Merchant;
+import by.teachmeskills.hw_12052023.service.MerchantService;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Application {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
 //        List<Merchant> merchants = new ArrayList<>();
-//        MerchantService merchantService = new MerchantService(merchants);
+        MerchantService merchantService = new MerchantService();
         boolean input = false;
 
         System.out.println("""
@@ -51,11 +56,15 @@ public class Application {
                     String idScanner = scanner.nextLine();
                 }
                 case "6" -> {
-
+                    merchantService.getMerchants();
                 }
                 case "7" -> {
                     System.out.print("Введите название мерчанта: ");
                     String nameMerchantScanner = scanner.nextLine();
+                    String id = String.valueOf(UUID.randomUUID());
+                    LocalDateTime createdAt = LocalDateTime.now();
+                    Merchant merchant = new Merchant(id, nameMerchantScanner, createdAt);
+                    merchantService.createMerchant(merchant);
                 }
                 case "8" -> {
                     System.out.print("Введите id мерчента, которое хотите удалить: ");
