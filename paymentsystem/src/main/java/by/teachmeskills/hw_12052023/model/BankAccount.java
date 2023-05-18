@@ -17,6 +17,13 @@ public class BankAccount {
         this.createdAt = createdAt;
     }
 
+    public BankAccount(String id, AccountStatus status, String accountNumber, LocalDateTime createdAt) {
+        this.id = id;
+        this.status = status;
+        this.accountNumber = accountNumber;
+        this.createdAt = createdAt;
+    }
+
     public String getId() {
         return id;
     }
