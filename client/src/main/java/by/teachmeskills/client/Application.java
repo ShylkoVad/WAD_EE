@@ -1,10 +1,12 @@
 package by.teachmeskills.client;
 
 import by.teachmeskills.hw_12052023.exceptions.MerchantNotFoundException;
+import by.teachmeskills.hw_12052023.exceptions.NoBankAccountsFoundException;
 import by.teachmeskills.hw_12052023.model.AccountStatus;
 import by.teachmeskills.hw_12052023.model.BankAccount;
 import by.teachmeskills.hw_12052023.model.Merchant;
 import by.teachmeskills.hw_12052023.service.MerchantService;
+import by.teachmeskills.hw_12052023.utils.CRUDUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,10 +28,10 @@ public class Application {
                 2 - получение всех мерчантов, зарегистрированных в платежной системе;
                 3 - получение информации о мерчанте по id;
                 4 - удаление мерчанта;
-                6 - добавление нового банковского аккаунта мерчанту;         
+                5 - добавление нового банковского аккаунта мерчанту;         
                 7 - получение информации о банковский аккаунтах мерчанта;
                 8 - редактирование банковского аккаунта мерчента;
-                5 - удаление банковского аккаунта мерчанта;
+                6 - удаление банковского аккаунта мерчанта;
                 0 - выход;
                 """);
 
@@ -45,6 +47,7 @@ public class Application {
                     LocalDateTime createdAt = LocalDateTime.now();
                     Merchant merchant = new Merchant(id, nameMerchantScanner, createdAt);
                     merchantService.createMerchant(merchant);
+                    System.out.println();
                 }
                 case "2" -> merchantService.getMerchants();
                 case "3" -> {
@@ -52,6 +55,9 @@ public class Application {
                     String idScanner = scanner.nextLine();
                     try {
                         merchantService.getMerchantById(idScanner);
+                        System.out.printf("Мерчант: ID - %s, имя - %s, дата добавления в базу - %s\n\n",
+                                CRUDUtils.getMerchantById(idScanner).getId(), CRUDUtils.getMerchantById(idScanner).getName(),
+                                CRUDUtils.getMerchantById(idScanner).getCreatedAt());
                     } catch (MerchantNotFoundException e) {
                         System.out.println(e.getMessage());
                     }
@@ -60,7 +66,7 @@ public class Application {
                     System.out.print("Введите id мерчента, которое хотите удалить: ");
                     String idDelete = scanner.nextLine();
                     merchantService.deletedMerchant(idDelete);
-                    System.out.println("Мерчент с id - " + idDelete + " успешно удален!");
+
                 }
                 case "5" -> {
                     System.out.print("Введите id мерчента, которому необходимо добавить банковский аккаунт: ");
@@ -69,38 +75,39 @@ public class Application {
                         Merchant merchant = merchantService.getMerchantById(idScanner);
                         System.out.print("Введите номер банковского аккаунта мерчента: ");
                         String idScannerAccount = scanner.nextLine();
-                        BankAccount bankAccount = new BankAccount(idScanner, AccountStatus.ACTIVE, idScannerAccount, LocalDateTime.now());
+                        String id = String.valueOf(UUID.randomUUID());
+                        BankAccount bankAccount = new BankAccount(id, idScanner, AccountStatus.ACTIVE, idScannerAccount, LocalDateTime.now());
                         merchantService.addBankAccount(merchant, bankAccount);
-                    } catch (MerchantNotFoundException e) {
-                        throw new RuntimeException(e);
+
+                    } catch (MerchantNotFoundException | NoBankAccountsFoundException e) {
+                        System.out.println(e.getMessage());
                     }
 
 
-
-
-
-
                 }
-
-
 
 
                 case "7" -> {
                     System.out.print("Введите id мерчента, для которого необходимо предоставить банковские аккаунт: ");
                     String idScanner = scanner.nextLine();
                 }
-                case "8" -> {
+                case "6" -> {
                     System.out.print("Введите id мерчента, у которого редактируется аккаунт: ");
                     String idScanner = scanner.nextLine();
                 }
-                case "6" -> {
+                case "8" -> {
                     System.out.print("Введите id мерчента, о которого надо удалить аккаунт: ");
                     String idScanner = scanner.nextLine();
+//                    Merchant merchant = merchantService.getMerchantById(idScanner);
+                    System.out.print("Введите номер банковского аккаунта который необходимо удалить: ");
+                    String idScannerAccount = scanner.nextLine();
+                    merchantService.deleteBankAccount(idScanner, idScannerAccount);
                 }
-
-
             }
 
+
         }
+
     }
 }
+

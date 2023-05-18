@@ -5,7 +5,6 @@ import by.teachmeskills.hw_12052023.model.BankAccount;
 import by.teachmeskills.hw_12052023.model.Merchant;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,9 +18,9 @@ public class CRUDUtils {
     private static final String DELETE_MERCHANT_QUERY = "DELETE FROM merchant WHERE id = ?";
     private static final String GET_MERCHANTS_QUERY = "SELECT * FROM merchant";
     private static final String SELECT_MERCHANT_ID_QUERY = "SELECT * FROM merchant WHERE id = ?";
-
-    private final static String ADD_BANK_ACCOUNT_QUERY = "INSERT INTO bank_accounts (id, merchant_id, status, account_number, created_at) Values (?, ?, ?, ?, ?)";
-    private final static String GET_MERCHANT_BANK_ACCOUNTS = "SELECT * FROM bank_accounts WHERE merchant_id = ? order by status ASC, created_at ASC";
+    private final static String INSERT_BANK_ACCOUNT_QUERY = "INSERT INTO bank_accounts (id, merchantId, status, accountNumber, createdAt) Values (?, ?, ?, ?, ?)";
+    private final static String GET_MERCHANT_BANK_ACCOUNTS = "SELECT * FROM bank_accounts WHERE merchant_id = ? order by status ASC, createdAt ASC";
+    private static final String DELETE_BANK_ACCOUNT_QUERY = "DELETE FROM bank_account WHERE id = ?";
 
 //    private static Connection connection;
 
@@ -57,6 +56,7 @@ public class CRUDUtils {
         }
         return new ArrayList<>();
     }
+
     public static Merchant getMerchantById(String id) throws MerchantNotFoundException { // получение информации о мерчанте по id (3)
         try {
             Connection connection = DbUtils.getConnection();
@@ -67,29 +67,42 @@ public class CRUDUtils {
             return new Merchant(set.getString("id"), set.getString("name"),
                     set.getTimestamp("createdAt").toLocalDateTime());
         } catch (SQLException e) {
-            throw new MerchantNotFoundException("Мерчант с id " + id + " отсутствует в базе\n" + "\n");
+            throw new MerchantNotFoundException("Мерчант с id " + id + " отсутствует в базе\n");
         }
     }
 
     public static void deleteMerchantById(String id) { // удаление мерчента (4)
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
         try {
             Connection connection = DbUtils.getConnection();
             preparedStatement = connection.prepareStatement(DELETE_MERCHANT_QUERY);
             preparedStatement.setString(1, id);
-            preparedStatement.execute();
             int result = preparedStatement.executeUpdate();
             if (result == 0) {
-                System.out.println("Мерчант с id " + id + " отсутствует в базе");
+                System.out.println("Мерчант с id " + id + " отсутствует в базе\n");
+            } else {
+                System.out.println("Мерчент с id - " + id + " успешно удален!\n");
             }
             preparedStatement.close();
         } catch (SQLException e) {
-            System.out.println("При удалении мерчанта из базы произошла ошибка");
+            System.out.println("При удалении мерчанта из базы произошла ошибка\n");
         }
     }
 
-
-
+    public static void addBankAccount(BankAccount bankAccount) {
+        try {
+            Connection connection = DbUtils.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_BANK_ACCOUNT_QUERY);
+            preparedStatement.setString(1, bankAccount.getId());
+            preparedStatement.setString(2, bankAccount.getMerchantId());
+            preparedStatement.setString(3, bankAccount.getStatus().toString());
+            preparedStatement.setString(4, bankAccount.getAccountNumber());
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(bankAccount.getCreatedAt()));
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("При добавлении банковского аккаунта в базу произошла ошибка");
+        }
+    }
 
     public List<BankAccount> getMerchantBankAccounts(Merchant merchant) {
         List<BankAccount> bankAccounts = new ArrayList<>();
@@ -124,12 +137,24 @@ public class CRUDUtils {
         return null;
     }
 
-    public void deleteBankAccountById(String id) {
+    public static void deleteBankAccountById(String merchantId, String idAccount) {
         //Ваш запрос в БД на удаление банковского счета
+        PreparedStatement preparedStatement;
+        try {
+            Connection connection = DbUtils.getConnection();
+            preparedStatement = connection.prepareStatement(DELETE_BANK_ACCOUNT_QUERY);
+            preparedStatement.setString(1, idAccount);
+            int result = preparedStatement.executeUpdate();
+            if (result == 0) {
+                System.out.println("Банковский аккаунт с id " + idAccount + " отсутствует в базе\n");
+            } else {
+                System.out.println("Банковский аккаунт с id - " + idAccount + " успешно удален у мерчанта " + merchantId + "\n");
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println("При удалении банковского аккаунта из базы произошла ошибка\n");
+        }
     }
-
-
-
 
 
 }
