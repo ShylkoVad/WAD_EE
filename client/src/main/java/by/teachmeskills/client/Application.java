@@ -29,9 +29,9 @@ public class Application {
                 3 - получение информации о мерчанте по id;
                 4 - удаление мерчанта;
                 5 - добавление нового банковского аккаунта мерчанту;         
-                7 - получение информации о банковский аккаунтах мерчанта;
-                8 - редактирование банковского аккаунта мерчента;
-                6 - удаление банковского аккаунта мерчанта;
+                6 - получение информации о банковский аккаунтах мерчанта;
+                7 - редактирование банковского аккаунта мерчента;
+                8 - удаление банковского аккаунта мерчанта;
                 0 - выход;
                 """);
 
@@ -66,7 +66,6 @@ public class Application {
                     System.out.print("Введите id мерчента, которое хотите удалить: ");
                     String idDelete = scanner.nextLine();
                     merchantService.deletedMerchant(idDelete);
-
                 }
                 case "5" -> {
                     System.out.print("Введите id мерчента, которому необходимо добавить банковский аккаунт: ");
@@ -78,27 +77,25 @@ public class Application {
                         String id = String.valueOf(UUID.randomUUID());
                         BankAccount bankAccount = new BankAccount(id, idScanner, AccountStatus.ACTIVE, idScannerAccount, LocalDateTime.now());
                         merchantService.addBankAccount(merchant, bankAccount);
-
                     } catch (MerchantNotFoundException | NoBankAccountsFoundException e) {
                         System.out.println(e.getMessage());
                     }
-
-
                 }
+                case "6" -> {
+                    System.out.print("Введите id мерчента, для которого необходимо предоставить банковские аккаунт: ");
+                    String idScanner = scanner.nextLine();
+                    merchantService.getMerchantBankAccounts(idScanner);
+                }
+
 
 
                 case "7" -> {
-                    System.out.print("Введите id мерчента, для которого необходимо предоставить банковские аккаунт: ");
-                    String idScanner = scanner.nextLine();
-                }
-                case "6" -> {
                     System.out.print("Введите id мерчента, у которого редактируется аккаунт: ");
                     String idScanner = scanner.nextLine();
                 }
                 case "8" -> {
                     System.out.print("Введите id мерчента, о которого надо удалить аккаунт: ");
                     String idScanner = scanner.nextLine();
-//                    Merchant merchant = merchantService.getMerchantById(idScanner);
                     System.out.print("Введите номер банковского аккаунта который необходимо удалить: ");
                     String idScannerAccount = scanner.nextLine();
                     merchantService.deleteBankAccount(idScanner, idScannerAccount);

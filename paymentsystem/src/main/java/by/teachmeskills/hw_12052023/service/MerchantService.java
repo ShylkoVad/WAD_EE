@@ -10,7 +10,6 @@ import by.teachmeskills.hw_12052023.utils.CRUDUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class MerchantService {
 
@@ -38,14 +37,23 @@ public class MerchantService {
 
     public void addBankAccount(Merchant merchant, BankAccount bankAccount) throws NoBankAccountsFoundException { // добавление нового банковского аккаунта мерчанту (5)
         if (bankAccount.getAccountNumber().length() != 8 || bankAccount.getAccountNumber().matches("\\D+")) {
-            throw new NoBankAccountsFoundException("Номер банковского аккаунта введен некорректно");
+            throw new NoBankAccountsFoundException("Номер банковского аккаунта введен некорректно" + "\n");
         }
         if (bankAccount.getStatus() == AccountStatus.DELETED) {
             bankAccount.setStatus(AccountStatus.ACTIVE);
         } else {
             CRUDUtils.addBankAccount(bankAccount);
         }
+    }
 
+    public List<BankAccount> getMerchantBankAccounts(String idScanner) { // получение информации о банковских аккаунтах мерчента (6)
+        Objects.requireNonNull(CRUDUtils.getMerchantBankAccounts(idScanner)).forEach(s -> {
+            System.out.printf("Банк аккаунт: ID мерчанта - %s, id банка аккаунта - %s, статус -%s," +
+                    " номер аккаунта - %s, дата добавления в базу - %s\n", s.getId(), s.getMerchantId(), s.getStatus(),
+                    s.getAccountNumber(), s.getCreatedAt());
+        });
+        System.out.println();
+        return null;
     }
 
 
@@ -53,12 +61,8 @@ public class MerchantService {
         CRUDUtils.deleteBankAccountById(merchantId, idAccount);
     }
 
-    public List<BankAccount> getMerchantBankAccounts(Merchant merchant) { // получение информации о банковских аккаунтах мерчента (7)
 
-        return null;
-    }
-
-    public BankAccount updateBankAccount(BankAccount bankAccount, String number) { // редактирование банковского аккаунта мерчанта (8)
+    public BankAccount updateBankAccount(BankAccount bankAccount, String number) { // редактирование банковского аккаунта мерчанта (7)
 
         return bankAccount;
     }
