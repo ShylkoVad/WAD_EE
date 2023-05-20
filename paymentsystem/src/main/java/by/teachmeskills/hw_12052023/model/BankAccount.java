@@ -17,8 +17,8 @@ public class BankAccount {
         this.createdAt = createdAt;
     }
 
-    public BankAccount(String id, AccountStatus status, String accountNumber, LocalDateTime createdAt) {
-        this.id = id;
+    public BankAccount(String merchantId, AccountStatus status, String accountNumber, LocalDateTime createdAt) {
+        this.merchantId = merchantId;
         this.status = status;
         this.accountNumber = accountNumber;
         this.createdAt = createdAt;

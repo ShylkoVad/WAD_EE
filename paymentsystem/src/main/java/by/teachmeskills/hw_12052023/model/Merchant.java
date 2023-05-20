@@ -13,6 +13,10 @@ public class Merchant {
         this.createdAt = createdAt;
     }
 
+    public Merchant(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }
