@@ -64,17 +64,17 @@ public class MerchantService {
                 getMerchantBankAccounts(merchantId);
                 System.out.print("Введите номер аккаунта, который необходимо редактировать: ");
                 String idScannerAccount = scanner.nextLine();
-                if (validateBankAccountNumber(idScannerAccount)) {
-                    System.out.print("Введите новый номер аккаунта: ");
-                    String newNumber = scanner.nextLine();
-                    BankAccount bankAccount = new BankAccount(merchantId, AccountStatus.ACTIVE, idScannerAccount, LocalDateTime.now());
-                    switch (CRUDUtils.searchDuplicateAccount(bankAccount)) {
-                        case 0 -> {
+                BankAccount bankAccount = new BankAccount(merchantId, AccountStatus.ACTIVE, idScannerAccount, LocalDateTime.now());
+                switch (CRUDUtils.searchDuplicateAccount(bankAccount)) {
+                    case 1 -> {
+                        if (validateBankAccountNumber(idScannerAccount)) {
+                            System.out.print("Введите новый номер аккаунта: ");
+                            String newNumber = scanner.nextLine();
                             CRUDUtils.updateBankAccount(newNumber, merchantId, idScannerAccount);
                             System.out.println("Банковский аккаунт успешно отредактирован.\n");
                         }
-                        case 1 -> System.out.println("Данный аккаунт существует.\n");
                     }
+                    case 0 -> System.out.println("Данного аккаунта не существует.\n");
                 }
             }
         } catch (BankAccountNotFoundException | NoBankAccountsFoundException | MerchantNotFoundException e) {
