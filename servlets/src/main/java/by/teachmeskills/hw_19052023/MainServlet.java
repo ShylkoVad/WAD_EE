@@ -13,16 +13,15 @@ import java.io.IOException;
 public class MainServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-        private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+
         String number1 = request.getParameter("number1");
         String number2 = request.getParameter("number2");
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
