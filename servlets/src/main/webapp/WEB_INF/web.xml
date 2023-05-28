@@ -5,13 +5,13 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
-    <servlet>
-        <servlet-name>main-servlet</servlet-name>
-        <servlet-class>by.teachmeskills.hw_19052023.MainServlet</servlet-class>
-    </servlet>
+<!--    <servlet>-->
+<!--        <servlet-name>main-servlet</servlet-name>-->
+<!--        <servlet-class>by.teachmeskills.hw_19052023.MainServlet</servlet-class>-->
+<!--    </servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>main-servlet</servlet-name>
-        <url-pattern>/calculator</url-pattern>
-    </servlet-mapping>
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>main-servlet</servlet-name>-->
+<!--        <url-pattern>/calculator</url-pattern>-->
+<!--    </servlet-mapping>-->
 </web-app>
