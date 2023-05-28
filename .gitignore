@@ -1,4 +1,6 @@
 .idea/
 WAD_EE.iml
 out/
-/client/target
+client/target
+paymentsystem/target
+target/
