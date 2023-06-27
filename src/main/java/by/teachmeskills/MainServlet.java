@@ -25,7 +25,7 @@ public class MainServlet extends HttpServlet {
         try (PrintWriter pw = resp.getWriter();) {
             DBConnectionManager dbConnectionManager = (DBConnectionManager) ctx.getAttribute("DBManager");
             Connection connection = dbConnectionManager.getConnection();
-            PreparedStatement ps = connection.prepareStatement("select * from students", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            PreparedStatement ps = connection.prepareStatement("select * from users", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
