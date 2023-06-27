@@ -1,4 +1,4 @@
-package by.teachmeskills;
+package by.teachmeskills.hw_26052023;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

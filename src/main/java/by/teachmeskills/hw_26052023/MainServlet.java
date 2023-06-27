@@ -1,4 +1,4 @@
-package by.teachmeskills;
+package by.teachmeskills.hw_26052023;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
