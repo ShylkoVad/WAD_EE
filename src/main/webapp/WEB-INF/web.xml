@@ -18,4 +18,9 @@
 <!--        <param-value>jdbc:mysql://localhost:3306/STUDENTS_DB</param-value>-->
         <param-value>jdbc:mysql://localhost:3306/users_db</param-value>
     </context-param>
+    <context-param>
+        <param-name>dburlshop</param-name>
+        <!--        <param-value>jdbc:mysql://localhost:3306/STUDENTS_DB</param-value>-->
+        <param-value>jdbc:mysql://localhost:3306/users_db</param-value>
+    </context-param>
 </web-app>
